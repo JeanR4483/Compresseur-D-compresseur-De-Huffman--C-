@@ -1,0 +1,135 @@
+\begin{algorithme}
+
+
+  \type{ArbreHuffman}{\typePointeur{NoeudArbreHuffman}}
+  
+  \begin{enregistrement}{DonneeArbreHuffman}
+    \champEnregistrement{octet}{\pointeur{Octet}}
+    \champEnregistrement{nbOccurrences}{\naturelNonNul}
+  \end{enregistrement}
+  
+  \begin{enregistrement}{NoeudArbreHuffman}
+    \champEnregistrement{filsGauche}{ArbreHuffman}
+    \champEnregistrement{filsDroit}{ArbreHuffman}
+    \champEnregistrement{donnee}{DonneeArbreHuffman}
+  \end{enregistrement}
+  
+  \fonction{ADH \textunderscore feuille}
+  {donnee : DonneeArbreHuffman}
+  {ArbreHuffman}
+  {}
+  {res : ArbreHuffman}
+  {
+    
+    \instruction{allouer(res)}
+    \affecter{\pointeur{res}.donnee}{donnee}
+    \affecter{\pointeur{res}.filsGauche}{NIL}
+    \affecter{\pointeur{res}.filsDroit}{NIL}
+    \retourner{res}
+  }
+  
+  \fonction{ADH \textunderscore estUneFeuille}
+  {noeud : ArbreHuffman}
+  {\booleen}
+  {}
+  {}
+  {
+    \retourner{(\pointeur{noeud}.filsGauche = NIL) et (\pointeur{noeud}.filsDroit = NIL)}
+  }
+  
+  \fonction{ADH \textunderscore obtenirFilsGauche}
+  {noeud : ArbreHuffman}
+  {ArbreHuffman}
+  {}
+  {}
+  {
+    \retourner{\pointeur{noeud}.filsGauche}
+  }
+  
+  \fonction{ADH \textunderscore obtenirFilsDroit}
+  {noeud : ArbreHuffman}
+  {ArbreHuffman}
+  {}
+  {}
+  {
+    \retourner{\pointeur{noeud}.filsDroit}
+  }
+  
+  \fonction{ADH \textunderscore obtenirDonnee}
+  {noeud : ArbreHuffman}
+  {DonneeArbreHuffman}
+  {ADH \textunderscore estUneFeuille(noeud)}
+  {}
+  {
+    \retourner{\pointeur{noeud}.donnee}
+  }
+  
+  \fonction{ADH \textunderscore obtenirPonderation}
+  {noeud : ArbreHuffman}
+  {\naturelNonNul}
+  {}
+  {}
+  {
+    \retourner{\pointeur{noeud}.donnee.nbOccurrences}
+  }
+  
+  \fonction{ADH \textunderscore ajouterRacine}
+  {arbreG, arbreD : ArbreHuffman}
+  {ArbreDeHuffman}
+  {}
+  {nouvelleRacine : ArbreDeHuffman}
+  {
+    \affecter{\pointeur{nouvelleRacine}.donnee.nbOccurrences}{ADH\textunderscore obtenirPonderation(arbreG) + ADH \textunderscore obtenirPonderation(arbreD)}
+    \affecter{\pointeur{nouvelleRacine}.filsGauche}{arbreG}
+    \affecter{\pointeur{nouvelleRacine}.filsDroit}{arbreD}
+    \retourner{nouvelleRacine}
+  }
+  
+\fonction{ADH \textunderscore profondeur}
+ {noeud: ArbreDeHuffman}
+  {\naturel}
+  {}
+  {gauche,droite:\naturel}
+  {
+    \sialorssinon{ADH \textunderscore estUneFeuille(noeud)}
+    {
+        \retourner{0}
+    }
+    {
+        \affecter{gauche}{0}
+        \affecter{droite}{0}
+        
+        \sialors{$ ADH \textunderscore obtenirFilsGauche(noeud) \neq NULL $}
+        {
+            \affecter{gauche}{ADH \textunderscore profondeur(ADH \textunderscore obtenirFilsGauche(noeud)) +1}
+        }
+        \sialors{$ ADH \textunderscore obtenirFilsDroit(noeud) \neq NULL $}
+        {
+            \affecter{gauche}{ADH \textunderscore profondeur(ADH \textunderscore obtenirFilsDroit(noeud)) +1}
+        }
+    
+        \sialorssinon{$ droite > gauche $}
+        {\retourner{droite}}
+        {\retourner{gauche}}
+
+    }
+    }
+
+  \procedure{Liberer \textunderscore ADH}
+  {\paramEntreeSortie{noeud : ArbreDeHuffman}}
+  {}
+  {}
+    {
+       \sialorssinon{ADH \textunderscore estUnefeuille (noeud)}
+        {
+          \instruction{desallouer(noeud)}
+        }
+        {
+            \instruction{desallouer(ADH \textunderscore ObtenirFilsGauche(noeud))}
+            \instruction{desallouer(ADH \textunderscore ObtenirFilsDroit(noeud))}
+        }
+    }
+  
+  
+
+\end{algorithme}

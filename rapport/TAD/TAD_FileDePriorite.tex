@@ -1,0 +1,32 @@
+\begin{tad}
+
+    \tadNom{FileDePriorite}
+    \tadParametres{Element}
+    \tadDependances{\booleen, \naturel}
+    
+    \begin{tadOperations}{fileDePriorite}
+        \tadOperation{fileDePriorite}{}{\tadParams{FileDePriorite}}
+        \tadOperation{estVide}{\tadParams{FileDePriorite}}{\tadParams{\booleen}}
+        \tadOperation{inserer}{\tadParams{FileDePriorite, Element}}{\tadParams{FileDePriorite}}
+        \tadOperationAvecPreconditions{defiler}{\tadParams{FileDePriorite}}{\tadParams{FileDePriorite, Element}}
+        \tadOperationAvecPreconditions{obtenirElement}{\tadParams{FileDePriorite}}{\tadParams{Element}}
+        \tadOperation{longueur}{\tadParams{FileDePriorite}}{\tadParams{\naturel}}
+    \end{tadOperations}
+
+    \begin{tadAxiomes}
+        \tadAxiome{estVide(fileDePriorite())}
+        \tadAxiome{non(estVide(inserer(f,e)))}
+        \tadAxiome{longueur(fileDePriorite()) = 0}
+        \tadAxiome{longueur(inserer(f, element)) = 1 + longueur(f)}
+        \tadAxiome{defiler(inserer(fileDePriorite(), e1)) = fileDePriorite(), e1}
+        \tadAxiome{obtenirElement(inserer(fileDePriorite(), e)) = e}
+    \end{tadAxiomes}
+
+    \begin{tadPreconditions}{defiler(f)}
+    	\tadPrecondition{obtenirElement}{non estVide(f)}
+        \tadPrecondition{defiler(f)}{non estVide(f)}
+    \end{tadPreconditions}
+
+\end{tad}
+   
+       

@@ -1,0 +1,150 @@
+\begin{algorithme}
+
+    \procedure{compresserFichier}
+        {\paramEntree{chemin : \chaine}}
+        {}
+        {}
+        {
+        	\affecter{fichierSource, longueur}{chargerFichierACompresser(chemin)}
+			\affecter{stats}{calculerStats(fichierSource, longueur)}
+        	\affecter{arbre}{creerArbreHuffman(stats)}
+        	\affecter{table}{creerTableDeCodage(arbre)}
+        	\instruction{ecrireFichierCompresse(table, stats, fichierSource, chemin, longueur)}
+        }
+
+    \fonction{chargerFichierACompresser}
+        {chemin : \chaine}
+		{FichierBinaire, \naturelNonNul}
+		{estUnCheminValide(chemin)}
+		{fic : FichierBinaire, longueur : \naturelNonNul}
+		{
+			\affecter{fic}{ouvrir(chemin,lecture)}
+			\affecter{longueur}{obtenirLongueur(fic)}
+			\retourner{fic,longueur}
+			\commentaire{longueur doit correspondre à la longueur du fichier en Octets (choisir la bonne fonction en C)}
+		}
+
+
+	\fonction{calculerStats}
+		{fichierSource : FichierBinaire, longueur : \naturel}
+		{Statistiques}
+		{}
+		{o : Octet, stats : Statistiques, i : \naturel}
+		{
+			\affecter{stats}{statistiques()}
+			\affecter{o}{octet()}
+			\pour{i}{0}{longueur}{}{
+				\affecter{o}{lireOctet(fichierSource)}
+				\instruction{ajouter(stats, o)}
+			}
+			\retourner{stats}	  
+		}
+	\fonction{creerArbreHuffman}
+		{stats : Statistiques}
+		{ArbreDeHuffman}
+		{}
+		{fp :FileDePriorité, a, a1, a2 : ArbreDeHuffman, i : \naturel}
+		{
+			\affecter{fp}{fileDePriorité()}
+			\pour{i}{1}{nbElements(stats)}{}{
+				\affecter{a}{feuille(stats.lesElements[i])}
+				\commentaire{stats.lesElements[i] contient un octet et son nombre d'occurences (cf conception détaillée statistiques)}
+				\instruction{FileDePriorité.insérer(fp, a)}
+			}
+			\commentaire{on vient donc de créer notre file de priorité avec les éléments les moins fréquents les plus prioritaires}
+			\tantque{FileDePriorite.longueur(fp) $\geq$ 2}{
+				\affecter{a1}{defiler(fp)}
+				\affecter{a2}{defiler(fp)}
+				\affecter{a}{ajouterRacine(a1, a2)}
+				\instruction{FileDePriorite.insérer(fp,a)}
+			}
+			\instruction{defiler(fp,a)}
+			\retourner{a}
+		}
+
+	\procedure{creerTableDeCodageR}
+		{\paramEntree{arbre : ArbreDeHuffman, codageCourant : CodeBinaire}
+		\paramEntreeSortie{table : TableDeCodage}}
+		{}
+		{sousArbreG, sousArbreD : ArbreDeHuffman; codeG, codeD : CodeBinaire}
+		{
+			\sialorssinon{estUneFeuille(arbre)}{
+				\instruction{TableDeCodage.ajouter(obtenirDonnee(arbre).cle, codageCourant)}
+			}
+			{
+				\affecter{sousArbreG}{obtenirFilsGauche(arbre)}
+				\affecter{codeG}{codageCourant}
+				\instruction{insererBit(0, codeBinaire.obtenirLongueur(codeG)+1, codeG)}
+
+				\affecter{sousArbreD}{obtenirFilsDroit(arbre)}
+				\affecter{codeD}{codageCourant}
+				\instruction{insererBit(1, codeBinaire.obtenirLongueur(codeD)+1, codeD)}
+
+				\instruction{creerTableDeCodageR(sousArbreG,codeG,table)}
+				\instruction{creerTableDeCodageR(sousArbreD,codeD,table)}
+			} 
+		}
+
+
+	\fonction{creerTableDeCodage}
+		{arbre : ArbreDeHuffman}
+		{TableDeCodage}
+		{}
+		{codeInit : codeBinaire}
+		{
+			\affecter{table}{tableDeCodage()}
+			\affecter{codeInit}{codeBinaire()}
+			\instruction{creerTableDeCodageR(arbre,table, codeInit)}
+			\retourner{table}
+		}
+
+	
+	\procedure{ecrireEnTete}
+		{\paramEntree{stats : Statistiques}
+		\paramEntreeSortie{fichierCompresse : FichierBinaire}}
+		{}
+		{i : \naturel}
+		{
+			\instruction{FichierBinaire.ecrireNaturel(fichierCompresse, 11)}
+			\commentaire{tout fichier compressé par notre programme commencera par l'identifiant 11}
+
+			\instruction{FichierBinaire.ecrireNaturel(fichierCompresse, nbElements(stats))}
+			\pour{i}{1}{nbElements(stats)}{}{
+				\instruction{FichierBinaire.ecrireOctet(fichierCompresse, stats.lesElements[i].cle)}
+				\instruction{FichierBinaire.ecrireNaturel(fichierCompresse, stats.lesElements[i].nbOccurences)}
+			}
+		}
+
+	\procedure{ecrireFichierCompresse}
+		{\paramEntree{table : TableDeCodage, stats : Statistiques, fichierSource : FichierBinaire, chemin : \chaine , longueur : \naturel}
+		\paramSortie{fichierCompresse : FichierBinaire}}
+		{}
+		{octetSource, octetAEcrire : Octet;  codage, flux : CodeBinaire}
+		{
+			\affecter{cheminFichierCompresse}{chemin + '.huf'}
+			\affecter{fichierCompresse}{ouvrir(cheminFichierCompresse, ecriture)}
+			\instruction{ecrireEntete(stats, fichierCompresse)}
+
+			\affecter{octetAEcrire}{octet()}
+			\affecter{flux}{codeBinaire()}
+			\tantque{non finFichier(fichierSource)}{
+				\affecter{octetSource}{lireOctet(fichierSource)}
+				\commentaire{on lit l'octet courant du fichier source}
+				\affecter{cb}{TableDeCodage.obtenirCodeBinaire(table, octetSource)}
+				\commentaire{on récupère le code binaire associé dans la table de codage}
+				\pour{i}{1}{codebinaire.obtenirLongueur(cb)}{}{
+					\instruction{codeBinaire.insererBit(codeBinaire.ObtenirBit(cb,i), i, flux)}
+				}
+				\commentaire{on ajoute ce code au flux}
+				\sialorssinon{CodeBinaire.obtenirLongueur(flux) $\geq$ 8}{
+					\pour{i}{1}{8}{}{
+						\instruction{Octet.modifierBit(octetAEcrire, i, codeBinaire.ObtenirBit(flux,1))}
+						\instruction{CodeBinaire.supprimerBit(1, flux)}
+						\instruction{FichierBinaire.ecrireOctet(octetAEcrire)}
+					}
+				}{}
+				\commentaire{si la longueur du flux est sup ou égale à 8, on écrit les 8 1ers bits dans un octet, on les retire du flux puis on les écrit dans le fichier compressé}
+			}
+		}
+		
+\end{algorithme}

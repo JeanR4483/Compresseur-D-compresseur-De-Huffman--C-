@@ -1,0 +1,113 @@
+\begin{algorithme}
+
+    \type{Statistiques}{\typePointeur{Noeud}}
+    \begin{enregistrement}{Noeud}
+        \champEnregistrement{octet}{Octet}
+        \champEnregistrement{occurrence}{\naturel}
+        \champEnregistrement{statSuivante}{Statistique}
+    \end{enregistrement}
+
+    \fonction{statistique}{}{Statistique}{}
+    {}
+    {
+        \retourner{NIL}
+    }
+
+    \fonction{estPresent}{stats : Statistiques, o : Octet}{\booleen}{}
+    {}
+    {
+        \sialorssinon{stats $=$ NIL}{
+            \retourner{faux}
+        }{
+            \sialorssinon{Octet.sontEgaux(\champ{stats}{octet}, o)}{
+                \retourner{vrai}
+            }{
+                \retourner{estPresent(\champ{stats}{statSuivante}, o)}
+            }
+        }
+    }
+    
+    \procedure{ajouter}
+    {\paramEntreeSortie{stats : Statistiques}
+    \paramEntree{o : Octet}}{}
+    {temp : Statistiques \\ 
+        trouve : \booleen}
+    {
+        \sialorssinon{stats $=$ NIL}{
+            \instruction{\allouer{temp}}
+            \affecter{\champ{temp}{octet}}{o}
+            \affecter{\champ{temp}{occurrence}}{1}
+            \affecter{\champ{stats}{statSuivante}}{temp}
+        }{
+            \sialorssinon{Octet.sontEgaux(\champ{stats}{octet}, o)}{
+                \affecter{\champ{stats}{occurrence}}{\champ{stats}{occurrence} + 1}
+            }{
+                \affecter{temp}{\champ{stats}{statSuivante}}
+                \instruction{ajouter(temp, o)}
+                \affecter{\champ{stats}{statSuivante}}{temp}
+            }
+        }
+    }
+
+    \procedure{retirer}
+    {\paramEntreeSortie{stats : Statistiques}
+    \paramEntree{o : Octet}}{}
+    {temp : Statistiques}
+    {   
+         \sialorssinon{Octet.sontEgaux(\champ{stats}{octet}, o)}{
+            \affecter{temp}{stats}
+            \affecter{stats}{\champ{stats}{statSuivante}}
+            \instruction{\desallouer{temp}}
+         }{
+            \affecter{temp}{\champ{stats}{statSuivante}}
+            \instruction{retirer(temp, o)}
+            \affecter{\champ{stats}{statSuivante}}{temp}
+         }
+    }
+
+    \fonction{obtenirOccurrence}{stats : Statistiques, o : Octet}{\naturel}
+    {estPresent(stats, o)}
+    {}
+    {
+        \sialorssinon{Octet.sontEgaux(\champ{stats}{octet}, o)}{
+            \retourner{\champ{stats}{occurrence}}
+        }{
+            \retourner{obteniroccurrence(\champ{stats}{statSuivante}, o)}
+        }
+    }
+
+    \fonction{obtenirOccurrences}{stats : Statistiques}{Liste\textless\naturel\textgreater}{}
+    {lesValeurs : Liste\textless\naturel\textgreater \\
+        s : Statistiques}
+    {
+        \affecter{lesValeurs}{listeVide()}
+        \affecter{s}{stats}
+        \tantque{s $\neq$ NIL}{
+            \instruction{insérer(lesValeurs, 1, \champ{s}{occurrence})}
+            \affecter{s}{\champ{s}{statSuivante}}
+        }
+        \retourner{lesValeurs}
+    }
+
+    \fonction{obtenirOctets}{stats : Statistiques}{Liste\textless Octet\textgreater}{}
+    {lesOctets : Liste\textless Octet\textgreater}
+    {
+        \affecter{lesOctets}{listeVide()}
+        \affecter{s}{stats}
+        \tantque{s $\neq$ NIL}{
+            \instruction{insérer(lesOctets, 1, \champ{s}{octet})}
+            \affecter{s}{\champ{s}{statSuivante}}
+        }
+        \retourner{lesOctets}
+    }
+
+    \fonction{nbElements}{stats : Statistiques}{\naturel}{}
+    {}
+    {
+        \sialorssinon{stats $=$ NIL}{
+            \retourner{0}
+        }{
+            \retourner{nbElement(\champ{stats}{statSuivante}) + 1}
+        }
+    }
+\end{algorithme}

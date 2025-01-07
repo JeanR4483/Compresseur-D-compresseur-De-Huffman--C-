@@ -1,0 +1,44 @@
+\begin{algorithme}
+    \type{Octet}
+        {\tableau{1..8}{de}{Bit}}
+    \fonction{octet}
+        {}{Octet}{}
+        {o : Octet, i : \naturel}
+        {
+            \pour{i}{1}{8}{}
+                {\affecter{o[i]}{0}}
+            \retourner{o}
+        }
+    \fonction{iemeBit}
+        {o : Octet, i : \naturelNonNul}
+        {Bit}
+        {1 $\leq$ i $\leq$ 8}
+        {}
+        {
+            \retourner{o[i]}
+        }
+    \procedure{modifierBit}
+        {\paramEntreeSortie{o : Octet}, \paramEntree{i : \naturelNonNul, val : Bit}}
+        {1 $\leq$ i $\leq$ 8}
+        {}
+        {\affecter{o[i]}{val}}
+
+    \fonction{sontEgaux}
+        {o1, o2 : Octet}
+        {\booleen}
+        {}
+        {egaux : \booleen, i : \naturel}
+        {
+            \affecter{egaux}{VRAI}
+            \affecter{i}{1}
+            \tantque{egaux $=$ VRAI et i $\leq$ 8}{
+                \sialorssinon{o1[i] $\ne$ o2[1]}{
+                    \affecter{egaux}{FAUX}
+                }{}
+                \affecter{i}{i+1}
+            }
+            \retourner{egaux}
+        }
+    
+
+\end{algorithme}

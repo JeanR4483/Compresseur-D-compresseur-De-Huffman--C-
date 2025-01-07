@@ -1,0 +1,86 @@
+
+\begin{algorithme}
+
+    
+    \type{FileDePriorite}{LC\textunderscore listeChainee}
+   
+    
+        \fonction{fileDePriorite}{}{FileDePriorite}{}
+        {}
+        {
+            \retourner{LC\textunderscore listeChainee()}
+            
+        }
+        
+    
+        \fonction{estVide}{fp : FileDePriorite}{\booleen}
+        {}{}
+        {\retourner{LC\textunderscore estVide (fp)}}
+    
+   
+    
+        \procedure{inserer}
+        {\paramEntree{  a: ArbreDeHuffman }
+        \paramEntreeSortie{f : FileDePriorite}}{}
+        {}
+        {
+           \sialorssinon{estVide(fp) ou (non(estVide(fp))et($ADH \textunderscore obtenirPonderation(a) < ADH \textunderscore obtenirPonderation(LC \textunderscore obtenirDonnee(fp))$))} 
+            { \instruction{LC\textunderscore ajouter(fp , a) }}
+            {
+        
+             \sialorssinon{(ADH\textunderscore obtenirPonderation(a)$\leq$ ADH\textunderscore obtenirPonderation(LC \textunderscore obteniDonne(fp))et(ADH \textunderscore estUneFeuille(a)) }
+                    {
+                        \sialorssinon{(DS \textunderscore obtenirOctet(ADH \textunderscore obtenirDonnee(a)$<$ DS\textunderscore obtenirOctet(LC \textunderscore obteniDonne(fp)) }
+                    {
+                       \instruction { LC\textunderscore ajouter(fp , a)}
+                    }
+                    {
+                        {\affecter{temp}{LC \textunderscore obtenirListeSuivante(fp) }
+                        \instruction{inserer(temp, a)}
+                       \instruction{LC\textunderscore fixerListeSuivante(fp,temp)}
+                       
+                  
+                       
+                    }
+                
+    
+                    }{} 
+                    }
+                    {
+                        { \instruction{LC\textunderscore ajouter(fp , a)}
+                        \instruction{inserer(temp, a)}
+                       \instruction{ LC\textunderscore fixerListeSuivante(fp, temp)}
+                       }
+                       
+                  
+                       
+                    }
+                
+    
+                    }{}         
+        }
+    
+        \procedure{defiler}
+        {
+        \paramEntreeSortie{fp : FileDePriorite}}
+        {non estVide(fp)} {}
+        {
+            \instruction{allouer(elemDefile)}
+           \affecter{elemDefile}{LC\textunderscore obtenirDonnee(fp)}
+           \instruction{LC\textunderscore supprimerTete (fp)}
+           
+                    }{}
+   
+        
+   
+        \fonction{longueur}{fp : FileDePriorite}{\naturel}{}
+        {}
+        {
+        \sialorssinon{LC\textunderscore estVide(fp)}
+        {\retourner{0}}
+        {\retourner{longueur(LC\textunderscore obtenirListeSuivante(fp))+1 }}
+        }
+    
+    
+    
+    \end{algorithme}

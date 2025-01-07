@@ -1,0 +1,27 @@
+\begin{tad}
+
+    \tadNom{Octet}
+    \tadDependances{\naturel, Bit}
+    
+    \begin{tadOperations}{modifierBit}
+        \tadOperation{octet}{}{\tadParams{Octet}}
+        \tadOperationAvecPreconditions{modifierBit}{\tadParams{Octet, \naturel, Bit}}{\tadParams{Octet}}
+        \tadOperationAvecPreconditions{iemeBit}{\tadParams{Octet, \naturel}}{\tadParams{Bit}}
+    \end{tadOperations}
+
+    \begin{tadSemantiques}{modifierBit}
+        \tadSemantique{octet}{creer un Octet qui contient 8 bits}
+        \tadSemantique{modifierBit}{modifier l'ième bit de l'Octet}
+        \tadSemantique{iemeBit}{retourne l'ième bit de l'Octet}
+    \end{tadSemantiques}
+
+    \begin{tadAxiomes}
+        \tadAxiome{iemeBit(modifierBit(o,u,b),i) = b}
+    \end{tadAxiomes}
+
+    \begin{tadPreconditions}{modifierBit(o,i,b)}
+        \tadPrecondition{modifierBit(o,i,b)}{i $\leq$ 8}
+        \tadPrecondition{iemeBit(o,i)}{i $\leq$ 8}
+    \end{tadPreconditions}
+
+\end{tad}

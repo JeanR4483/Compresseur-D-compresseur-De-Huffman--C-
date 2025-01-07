@@ -1,0 +1,89 @@
+\begin{algorithme}
+
+\procedure{decompresserFichier}
+  {\paramEntree{chemin : \chaine}}
+  {estUnCheminValide(chemin)}
+  {fichierSource : FichierBinaire, longueur : \naturel, stats : Statistiques, reussite : \booleen, arbre : ArbreHuffman, noeudArbreActuel : ArbreHuffman}
+  {
+  	\affecter{fichierSource}{fichierBinaire(chemin)}
+    \instruction{FichierBinaire.ouvrir(fichierSource, lecture)}
+	\affecter{reussite, longueur, stats}{chargerFichierADecompresser(\pointeur{fichierSource})}
+	\affecter{arbre}{construireArbreHuffman(stats)}
+	\affecter{fichierDecompresse}{FichierBinaire.fichierBinaire(chemin-'.huf')}
+    \instruction{FichierBinaire.ouvrir(fichierDecompresse, ecriture)}
+	\tantque{non FichierBinaire.finFichier(fichierSource)}
+	{
+	  \affecter{octetTemp}{FichierBinaire.lireOctet(fichierSource)}
+	  \pour{i}
+	  {1}
+	  {8}
+	  {}
+	  {
+		\sialorssinon{compteurLongueurSource $\leq$ longueur}
+		{
+		  \sialorssinon{Octet.lireBit(octetTemp, i) = 1}
+	      {
+	        \affecter{noeudArbreActuel}{obtenirFilsDroit(noeudArbreActuel)}
+	      }
+	      {
+	        \affecter{noeudArbreActuel}{obtenirFilsGauche(noeudArbreActuel)}
+	      }
+	      \affecter{compteurLongueurSource}{compteurLongueurSource + 1}
+	      \sialorssinon{estUneFeuille(noeudArbreActuel)}
+	      {
+	        \instruction{FichierBinaire.ecrireOctet(fichierDecompresse)}{obtenirDonnee(noeudArbreActuel)}
+	        \affecter{noeudArbreActuel}{arbre}
+	      }
+	      {}
+	    }
+	    {}
+	  }
+	}
+    \instruction{FichierBinaire.fermer(fichierSource)}
+    \commentaire{On fait ici le choix de lire, et d'écrire dans, le fichier décompressé en même temps qu'on décode, plutôt que de déléguer cette tâche à un sous-programme; cela permet d'éviter (si on décodait d'abord, stockait dans un CodeBinaire, puis écrivait enfin) d'avoir en mémoire une variable de type CodeBinaire de la même longueur que le fichier (soit décompressé soit compressé), ce qui serait très problématique pour de gros fichiers ($ > $ 4Go ou toute autre valeur susceptible de dépasser la capacité de la RAM notamment).}
+  }
+
+\begin{verbatim}
+
+\end{verbatim}
+
+\fonction{chargerFichierADecompresser}
+  {fichierSource : \pointeur{FichierBinaire}}
+  {\booleen, \naturel, Statistiques}
+  {}
+  {identifiant = "" : \chaine, octetTemp : Octet, i : [1..8], longueur, longueurStats, natTemp : \naturel, stats : Statistiques}
+  {
+    \instruction{FichierBinaire.lireNaturel(fichierSource, identifiant)}
+    \commentaire{On lit l'identifiant du fichier : \naturel}
+    \instruction{FichierBinaire.lireNaturel(fichierSource, longueur)}
+    \commentaire{On lit la longueur du fichier : \naturel}
+    \instruction{FichierBinaire.lireNaturel(fichierSource, longueurStats)}
+    \commentaire{On lit la longueur des Statistiques en nombre d'éléments : \naturel}
+    \affecter{stats}{Statistiques.statistiques()}
+    \pour{i}
+      {1}
+      {longueurStats}
+      {}
+      {
+        \instruction{FichierBinaire.lireOctet(fichierSource, octetTemp)}
+        \instruction{FichierBinaire.lireNaturel(fichierSource, natTemp)}
+        \instruction{Statistiques.ajouter(stats, octetTemp, natTemp)}
+      }
+      \retourner{identifiant=X, longueur, stats}
+      \commentaire{X est ici l'identifiant de vérification, choisi arbitrairement - peut être un entier, un caractère ou une CDC, mais la façon de le lire en dépendra}
+  }
+
+\begin{verbatim}
+
+\end{verbatim}
+
+\fonction{construireArbreHuffman}
+  {stats : Statistiques}
+  {ArbreDeHuffman}
+  {}
+  {}
+  {
+    \instruction{Même fonction que pour la compression}
+  }
+
+\end{algorithme}

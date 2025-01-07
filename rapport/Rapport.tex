@@ -1,0 +1,201 @@
+\documentclass{article}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{pseudocode}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{rotating}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2cm}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{flushleft}
+        \includegraphics[width=0.2\textwidth]{./Visuels/Logo_INSA_Rouen.jpg}\par\vspace{1cm}
+    \end{flushleft}
+    \centering
+    \vspace{1cm}
+    {\huge\bfseries Projet Compresseur d'Huffman\par}
+    \vspace{1cm}
+    {\scshape\Large Groupe 11\par}
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    \bigbreak
+    
+    \begin{minipage}{0.5\textwidth}
+    \center
+    
+    \emph{Étudiants:}\\
+    Tom \textsc{POGET}\\
+    Basile \textsc{JORET}\\
+    Haijiao \textsc{YU}\\
+    Jean \textsc{ROUXEL}\\
+    Mohamed Aziz \textsc{AYARI}\\
+    \end{minipage}\\[2cm]
+
+    \center
+    \vspace{1cm}
+    {\Large \emph{Date de Rendu}: 9 janvier 2024\par}
+    \vspace{1cm}
+    {\Large Enseignants Encadrants: \par}
+    {\large N. Delestre et L. Vercouter\par}
+    \vfill
+\end{titlepage}
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\tableofcontents
+
+\newpage
+\section*{Introduction}
+	Au cours de ce projet, nous avons eu l'opportunité de développer un compresseur d'Huffman. Afin d'y parvenir, nous avons tout d'abord mené une analyse descendante, puis créé les Types Abstraits de Données ArbreDeHuffman, CodeBinaire, FileDePriorité, Octet, Statistiques et TableDeCodage dont les spécifications, conceptions préliminaires et détaillées respectives se trouvent ci-dessous. Nous avons également créé un programme "principal" pour la compression mainCompression, un pour la décompression mainDecompression, et un mainGlobal qui se charge du choix entre les deux.
+	
+\newpage
+\section{Analyse}
+\subsection{Analyse Descendante}
+
+\begin{sidewaysfigure}
+    \includegraphics[scale=0.1]{./Visuels/Analyse_Descendante.png}
+\end{sidewaysfigure}
+
+\subsection{TAD}
+\subsubsection{Arbre De Huffman}
+	\input{TAD/TAD_ArbreDeHuffman}
+\subsubsection{Code Binaire}
+	\input{TAD/TAD_CodeBinaire}
+\subsubsection{File De Priorité}
+	\input{TAD/TAD_FileDePriorite}
+\subsubsection{Octet}
+	\input{TAD/TAD_Octet}
+\subsubsection{Statistiques}
+	\input{TAD/TAD_Statistiques}
+\subsubsection{Table De Codage}
+	\input{TAD/TAD_TableDeCodage}
+	
+\section{Conception préliminaire}
+\subsection{TAD}
+\subsubsection{Arbre De Huffman}
+	\input{Conception_preliminaire/TAD_ArbreDeHuffmanCP}
+\subsubsection{Code Binaire}
+	\input{Conception_preliminaire/TAD_CodeBinaireCP}
+\subsubsection{File De Priorité}
+	\input{Conception_preliminaire/TAD_FileDePrioriteCP}
+\subsubsection{Octet}
+	\input{Conception_preliminaire/TAD_OctetCP}
+\subsubsection{Statistiques}
+	\input{Conception_preliminaire/TAD_StatistiquesCP}
+\subsubsection{Table De Codage}
+	\input{Conception_preliminaire/TAD_TableDeCodageCP}
+\subsection{Programme Principal}
+\subsubsection{Compression}
+	\input{Conception_preliminaire/MainCompressionCP}
+\subsubsection{Décompression}
+	\input{Conception_preliminaire/MainDecompressionCP}
+\subsubsection{Global}
+	\input{Conception_preliminaire/MainGlobalCP}
+	
+\section{Conception Détaillée}
+\subsection{Types de données}
+\subsubsection{Arbre De Huffman}
+	\input{Conception_detaillee/TAD_ArbreDeHuffmanCD}
+\subsubsection{Code Binaire}
+	\input{Conception_detaillee/TAD_CodeBinaireCD}
+\subsubsection{File De Priorité}
+	\input{Conception_detaillee/TAD_FileDePrioriteCD}
+\subsubsection{Octet}
+	\input{Conception_detaillee/TAD_OctetCD}
+\subsubsection{Table De Codage}
+	\input{Conception_detaillee/TAD_TableDeCodageCD}
+\subsubsection{Statistiques}
+	\input{Conception_detaillee/TAD_StatistiquesCD}
+\subsection{Programme Principal}
+\subsubsection{Compression}
+	\input{Conception_detaillee/MainCompressionCD}
+\subsubsection{Décompression}
+	\input{Conception_detaillee/MainDecompressionCD}
+\subsubsection{Global}
+	\input{Conception_detaillee/MainGlobalCD}
+
+\section{Développement}
+\subsection{Types génériques}
+\subsubsection{Accesseurs des Octets}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/accesseursOctets.c}
+	\bigskip
+\subsubsection{Définitions des types}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/mainTypes.c}
+	\bigskip
+\subsubsection{Allocation dynamique de chaine de caractères}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/cdcAllocationDynamique.c}
+	\bigskip
+\subsubsection{Allocation dynamique de entiers}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/entierAllocationDynamique.c}
+	\bigskip
+\subsubsection{Liste Chainée}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/listeChainee.c}
+	\bigskip
+\subsection{TAD}
+\subsubsection{Arbre De Huffman}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_ArbreDeHuffman.c}
+	\bigskip
+\subsubsection{Code Binaire}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_CodeBinaire.c}
+	\bigskip
+\subsubsection{File De Priorité}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_FileDePriorite.c}
+	\bigskip
+\subsubsection{Octet}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_Octet.c}
+	\bigskip
+\subsubsection{Table de Codage}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_TableDeCodage.c}
+	\bigskip
+\subsubsection{Statistiques}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/TAD_Statistiques.c}
+	\bigskip
+\subsection{Programme Principal}
+\subsubsection{Compression}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/mainCompression.c}
+	\bigskip
+\subsubsection{Décompression}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/mainDecompression.c}
+	\bigskip
+\subsubsection{Global}
+	\lstinputlisting[language=C,breaklines=true]{../programme/src/main.c}
+	\bigskip
+\section{Optimisations}
+
+
+
+\section{Repartition des taches}
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|} \hline 
+		&  Tom POJET&  Basile JORET&  Jean ROUXEL&  HAIJIAO YU& Mohamed AZIZ AYARI\\ \hline 
+		ANALYSE&  Statistiques&  ArbreDeHuffman\TableDeCodage&  FileDePriorite&  Octet& CodeBinaire\\ \hline 
+		Conception préliminaire& TableDeCodage & CB/FDP/mainDecompression & ADH/mainCompression & Statistiques/mainDecompression & MainCodage/Octet\\ \hline 
+		Conception detailléé& ADH/FDP/mainDecompression & Octet & Statistiques/TDC & mainCompression & FileDePriorité\\ \hline 
+		Developpement& ADH/TDC/mainCompression/mainDecompression & Statistiques & Octet/CodeBinaire & CB/Octet/FDP & ArbreDeHuffman \mainDEcompression\\ \hline
+   \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+\section{Conclusion}
+Ce projet nous aura non seulement confrontés aux réalités de la programmation en C, mais aussi à de nouvelles méthodes de travail, de nouveaux outils et nous aura appris, en plus de compétences techniques, des notions de travail en équipe, voire de management. C'était également une opportunité de s'éloigner des sentiers battus et de trouver et implémenter nos propres solutions au défi qu'il représentait, vis-à-vis notamment des nombreuses améliorations qu'il fallait trouver et apporter pour rendre la compression intéressante (ou même utile). Il ne fait aucun doute que ces compétences sauront se montrer précieuses dans notre avenir professionnel.
+
+\end{document}

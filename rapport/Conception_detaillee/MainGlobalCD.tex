@@ -1,0 +1,21 @@
+\begin{algorithme}
+
+    \procedure{main}{\paramEntree{paramètre : \caractere}, \paramEntree{chemin : \chaine}}
+    {}
+    {}
+    {
+        \sialorssinon{non (paramètre = 'c' et paramètre = 'd')}
+        {
+            \ecrire{Commande invalide (c pour compression et d pour décompression)}
+        }
+        {
+            \sialorssinon{paramètre = 'c'}
+            {
+                \instruction{compresserFichier(chemin)}
+            }
+            {
+                \instruction{decompresserFichier(chemin)}
+            }
+        }
+    }
+\end{algorithme}

@@ -1,0 +1,22 @@
+\begin{algorithme}
+    \signatureFonction{codeBinaire}
+        {}{CodeBinaire}{}
+    \signatureFonction{estVide}
+        {cb : CodeBinaire}
+        {Booleen}{}
+    \signatureProcedure{insererBit}
+        {\paramEntreeSortie{cb : CodeBinaire}
+        \paramEntree{i : \naturelNonNul, b : Bit}}
+        {i $\leq$ obtenirLongueur(cb) + 1}
+    \signatureProcedure{supprimerBit}
+        {\paramEntreeSortie{cb : CodeBinaire}
+        \paramEntree{i : \naturelNonNul}}
+        {i $\leq$ obtenirLongueur(cb)}
+    \signatureFonction{obtenirBit}
+        {cb : CodeBinaire, i : \naturelNonNul}
+        {Bit}
+        {i $\leq$ obtenirLongueur(cb)}
+    \signatureFonction{obtenirLongueur}
+        {cb : CodeBinaire}
+        {\naturel}{}
+\end{algorithme}
